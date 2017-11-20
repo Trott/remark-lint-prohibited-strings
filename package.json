@@ -1,0 +1,33 @@
+{
+  "name": "remark-lint-prohibited-strings",
+  "version": "1.0.0",
+  "description": "Check for prohibited strings",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint index.js test.js && node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Trott/remark-lint-prohibited-strings.git"
+  },
+  "keywords": [
+    "remark",
+    "lint",
+    "markdown",
+    "md",
+    "strings"
+  ],
+  "author": "Rich Trott",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Trott/remark-lint-prohibited-strings/issues"
+  },
+  "homepage": "https://github.com/Trott/remark-lint-prohibited-strings#readme",
+  "dependencies": {
+    "unified-lint-rule": "^1.0.2",
+    "unist-util-visit": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0"
+  }
+}
