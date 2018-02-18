@@ -77,5 +77,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should flag prohibited string if it is followed by . alone'
     );
   }
+
+  {
+    const contents = 'The fhqwhgads.v8 page for the band v8 rocks.';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'V8', no: 'v8' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:1-1:45: Use "V8" instead of "v8"' ],
+      'should flag prohibited string even if an allowed usage precedes it'
+    );
+  }
   t.end();
 });
