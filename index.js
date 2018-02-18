@@ -5,6 +5,19 @@ const visit = require('unist-util-visit');
 
 module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings);
 
+function testProhibited(val, content) {
+  const re = new RegExp(`(\\.)?${val.no}(\\.\\w)?`, 'g');
+
+  let result = null;
+  while (result = re.exec(content)) {
+    if (!result[1] && !result[2]) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function prohibitedStrings(ast, file, strings) {
   visit(ast, 'text', checkText);
 
@@ -12,8 +25,7 @@ function prohibitedStrings(ast, file, strings) {
     const content = node.value;
 
     strings.forEach((val) => {
-      const re = new RegExp(`(?<!\\.)${val.no}(?!\\.\\w)`);
-      if (re.test(content)) {
+      if (testProhibited(val, content)) {
         file.message(`Use "${val.yes}" instead of "${val.no}"`, node);
       }
     });
