@@ -90,7 +90,7 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '@nodejs-v8-inspector';
+    const contents = '@nodejs/v8-inspector';
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
         .processSync(vfile({ path: path, contents: contents }))
