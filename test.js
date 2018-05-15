@@ -88,5 +88,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should flag prohibited string even if an allowed usage precedes it'
     );
   }
+
+  {
+    const contents = '@nodejs-v8-inspector';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'V8', no: 'v8' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [],
+      'should ignore prohibited string if it is part of an @-mention'
+    );
+  }
   t.end();
 });
