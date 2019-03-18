@@ -99,5 +99,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should ignore prohibited string if it is part of an @-mention'
     );
   }
+
+  {
+    const contents = 'RfC123';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'RFC <number>', no: '[Rr][Ff][Cc]\\d+' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:1-1:7: Use "RFC <number>" instead of "RfC123"' ],
+      'should provide reasonable output from regexp-y things'
+    );
+  }
   t.end();
 });
