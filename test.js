@@ -110,5 +110,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should provide reasonable output from regexp-y things'
     );
   }
+
+  {
+    const contents = 'denote that';
+    t.deepEqual(
+      processorWithOptions([{ no: 'note that', yes: '<nothing>' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [],
+      'should assume word breaks'
+    );
+  }
   t.end();
 });
