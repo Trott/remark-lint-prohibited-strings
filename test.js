@@ -79,6 +79,17 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
+    const contents = 'The gatsby-specific way to do this is as follows:';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!\\-)' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ ],
+      'should allow negative lookaheads with custom regular expression config'
+    );
+  }
+
+  {
     const contents = 'The fhqwhgads.v8 page for the band v8 rocks.';
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
@@ -119,6 +130,28 @@ test('remark-lint-prohibited-strings', (t) => {
         .messages.map(String),
       [],
       'should assume word breaks'
+    );
+  }
+
+  {
+    const contents = '`the-gatsby-kebab-in-code`';
+    t.deepEqual(
+      processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [],
+      'should ignore strings in backticks'
+    );
+  }
+
+  {
+    const contents = '```\nthe-gatsby-kebab-in-code\n```';
+    t.deepEqual(
+      processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [],
+      'should ignore strings in code fences'
     );
   }
   t.end();
