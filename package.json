@@ -4,7 +4,7 @@
   "description": "Check for prohibited strings",
   "main": "index.js",
   "scripts": {
-    "test": "eslint index.js test.js && node test.js"
+    "test": "eslint index.js test.js && c8 --check-coverage --lines 100 --functions 100 --branches 100 node test.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {
+    "c8": "^7.0.0",
     "eslint": "^6.0.1",
     "remark": "^11.0.1",
     "remark-lint": "^6.0.1",
