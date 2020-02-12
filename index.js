@@ -6,7 +6,20 @@ const visit = require('unist-util-visit');
 module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings);
 
 function testProhibited(val, content) {
-  const re = new RegExp(`(\\.|@[a-z0-9/-]*)?\\b(${val.no})\\b(\\.\\w)?`, 'g');
+  let regexpString = '(\\.|@[a-z0-9/-]*)?';
+
+  // If it starts with a letter, make sure it is a word break.
+  if (/^\b/.test(val.no)) {
+    regexpString += '\\b';
+  }
+  regexpString += `(${val.no})`;
+
+  // If it ends with a letter, make sure it is a word break.
+  if (/\b$/.test(val.no)) {
+    regexpString += '\\b';
+  }
+  regexpString += '(\\.\\w)?';
+  const re = new RegExp(regexpString, 'g');
 
   let result = null;
   while (result = re.exec(content)) {
