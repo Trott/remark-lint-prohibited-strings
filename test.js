@@ -154,5 +154,19 @@ test('remark-lint-prohibited-strings', (t) => {
       'should ignore strings in code fences'
     );
   }
+
+  {
+    const contents = "for Node.js' stuff\n\nand Node.js's stuff too";
+    t.deepEqual(
+      processorWithOptions([{ no: "Node\\.js's?", yes: 'the Node.js' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [
+        'fhqwhgads.md:1:1-1:19: Use "the Node.js" instead of "Node.js\'"',
+        'fhqwhgads.md:3:1-3:24: Use "the Node.js" instead of "Node.js\'s"'
+      ],
+      'should allow flagging of apostrophes as final characters in "no" string'
+    );
+  }
   t.end();
 });
