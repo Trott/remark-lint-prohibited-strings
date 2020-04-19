@@ -303,5 +303,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should allow identical case with `yes` option but no `no` option'
     );
   }
+
+  {
+    const contents = 'Is it _WordPress_ or is it _WoRdPrEsS_?';
+    t.deepEqual(
+      processorWithOptions([{ no: 'wordpress', yes: 'WordPress' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:29-1:38: Use "WordPress" instead of "WoRdPrEsS"' ],
+      'should do case-insensitive matching'
+    );
+  }
   t.end();
 });

@@ -7,16 +7,13 @@ Example configuration:
   [
     require("remark-lint-prohibited-strings"),
     [
-      { no: "End-Of-Life", yes: "End-of-Life" },
-      { no: "End-of-life", yes: "End-of-Life" },
+      { no: "end-of-life", yes: "End-of-Life" },
       { no: 'gatsby', yes: "Gatsby", ignoreNextTo: "-" },
-      { no: "Github", yes: "GitHub" },
-      { no: "Javascript", yes: "JavaScript" },
-      { no: "Node.JS", yes: "Node.js" },
-      { no: "Rfc", yes: "RFC" },
-      { no: "[Rr][Ff][Cc]\\d+", yes: "RFC <number>" },
+      { no: "github", yes: "GitHub" },
+      { no: "javascript", yes: "JavaScript" },
+      { no: "node\\.js", yes: "Node.js" },
       { no: "rfc", yes: "RFC" },
-      { no: "UNIX", yes: "Unix" },
+      { no: "RFC\\d+", yes: "RFC <number>" },
       { no: "unix", yes: "Unix" },
       { no: "v8", yes: "V8" }
     ]
@@ -24,9 +21,10 @@ Example configuration:
   ```
 
 `no` is a string specifying the string you wish to prohibit. Regular expression
-characters are respected. If `no` is omitted but `yes` is supplied, then the
-`no` string will be inferred to be any case-insensitive match of the `yes`
-string that is not a case-sensitive match of the `yes` string. In other words,
+characters are respected. The `no` values are treated as case-insensitive
+values. If a string case-insensitive matches the `no` value, it will be flagged
+as an error unless the string also case-sensitive matches the `yes` value. If
+`no` is omitted, it is inferred to be the same as `yes`. In other words,
 `{ yes: 'foo' }` means that _foo_ is permitted, but _Foo_ and _FOO_ are
 prohibited.
 
