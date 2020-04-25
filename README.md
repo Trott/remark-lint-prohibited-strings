@@ -26,7 +26,8 @@ Example configuration:
 `no` is a string specifying the string you wish to prohibit. Regular expression
 characters are respected.
 
-`yes` is a string specifying what someone will be told to use instead.
+`yes` is a string specifying what someone will be told to use instead. It is
+optional.
 
 `ignoreNextTo` is a string that will make a prohibited string allowable if it
 appears next to that string. For example, in the configuration above, _gatsby_

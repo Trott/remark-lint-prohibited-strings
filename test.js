@@ -270,5 +270,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should still match on word boundaries with ignoreNextTo'
     );
   }
+
+  {
+    const contents = 'You got Sblounchsked!';
+    t.deepEqual(
+      processorWithOptions([{ no: 'Sblounchsked' }])
+          .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:9-1:21: Do not use "Sblounchsked"' ],
+      'should permit omitting the yes option'
+    );
+  }
   t.end();
 });

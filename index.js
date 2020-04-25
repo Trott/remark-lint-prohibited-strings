@@ -13,8 +13,8 @@ module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings);
 function testProhibited(val, content) {
   let regexpString = '(\\.|@[a-zA-Z0-9/-]*)?';
 
-  // eslint-disable-next-line max-len
-  const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : '';
+  const ignoreNextTo =
+    val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : '';
 
   // If it starts with a letter, make sure it is a word break.
   if (/^\b/.test(val.no)) {
@@ -61,7 +61,9 @@ function prohibitedStrings(ast, file, strings) {
       const results = testProhibited(val, content);
       if (results.length) {
         results.forEach(({ result, index }) => {
-          file.message(`Use "${val.yes}" instead of "${result}"`, {
+          const message = val.yes ? `Use "${val.yes}" instead of "${result}"` :
+            `Do not use "${result}"`;
+          file.message(message, {
             start: location.toPosition(initial + index),
             end: location.toPosition(initial + index + [...result].length)
           });
