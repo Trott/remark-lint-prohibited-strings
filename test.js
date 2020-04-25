@@ -134,6 +134,17 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
+    const contents = '@Nodejs/v8-inspector';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'V8', no: 'v8' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [],
+      'should ignore prohibited string if it is part of an @-Mention'
+    );
+  }
+
+  {
     const contents = 'RfC123';
     t.deepEqual(
       processorWithOptions([{ yes: 'RFC <number>', no: '[Rr][Ff][Cc]\\d+' }])
