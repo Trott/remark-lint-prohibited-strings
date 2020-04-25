@@ -29,5 +29,5 @@ capitalized ("Gatsby"), but you want to allow it to appear in hyphenated strings
 (like plugin-gatsby or gatsby-module or plugin-gatsby-module):
 
 ```javascript
-{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }
+{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }
 ```
