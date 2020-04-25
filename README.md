@@ -21,3 +21,13 @@ Example configuration:
     ]
   ]
   ```
+
+The `no` values are treated are incorporated into regular expressions, which
+means that you can do fancy things with negative lookaheads and negative
+lookbehinds. For example, if you wanted to flag "gatsby" because you want it
+capitalized ("Gatsby"), but you want to allow it to appear in hyphenated strings
+(like plugin-gatsby or gatsby-module or plugin-gatsby-module):
+
+```javascript
+{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }
+```
