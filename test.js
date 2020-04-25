@@ -81,11 +81,33 @@ test('remark-lint-prohibited-strings', (t) => {
   {
     const contents = 'The gatsby-specific way to do this is as follows:';
     t.deepEqual(
-      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!\\-)' }])
+      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!-)' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ ],
       'should allow negative lookaheads with custom regular expression config'
+    );
+  }
+
+  {
+    const contents = 'word-gatsby gatsby-word word-gatsby-word';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ ],
+      'should allow negative lookaheads and lookbehinds'
+    );
+  }
+
+  {
+    const contents = 'word-gatsby gatsby-word word-gatsby-word gatsby';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }])
+          .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:1-1:48: Use "Gatsby" instead of "gatsby"' ],
+      'should still find things that do not match lookahead/lookbehind'
     );
   }
 
