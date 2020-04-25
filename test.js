@@ -81,7 +81,7 @@ test('remark-lint-prohibited-strings', (t) => {
   {
     const contents = 'The gatsby-specific way to do this is as follows:';
     t.deepEqual(
-      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!-)' }])
+      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!-)\\b' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ ],
@@ -92,7 +92,7 @@ test('remark-lint-prohibited-strings', (t) => {
   {
     const contents = 'word-gatsby gatsby-word word-gatsby-word';
     t.deepEqual(
-      processorWithOptions([{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }])
+      processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ ],
@@ -103,11 +103,22 @@ test('remark-lint-prohibited-strings', (t) => {
   {
     const contents = 'word-gatsby gatsby-word word-gatsby-word gatsby';
     t.deepEqual(
-      processorWithOptions([{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }])
+      processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
           .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ 'fhqwhgads.md:1:42-1:48: Use "Gatsby" instead of "gatsby"' ],
       'should still find things that do not match lookahead/lookbehind'
+    );
+  }
+
+  {
+    const contents = 'gatsbyfoo foogatsby foogatsbyfoo';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
+          .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ ],
+      'should still match on word boundaries with lookahead/lookbehind'
     );
   }
 
