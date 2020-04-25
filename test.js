@@ -212,5 +212,19 @@ test('remark-lint-prohibited-strings', (t) => {
       'should allow flagging of apostrophes as final characters in "no" string'
     );
   }
+
+  {
+    const contents = 'gatsby Gatsby gatsby';
+    t.deepEqual(
+      processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [
+        'fhqwhgads.md:1:1-1:7: Use "Gatsby" instead of "gatsby"',
+        'fhqwhgads.md:1:15-1:21: Use "Gatsby" instead of "gatsby"',
+      ],
+      'should flag multiple violations in a single node'
+    );
+  }
   t.end();
 });
