@@ -1,5 +1,6 @@
 'use strict';
 
+const escapeStringRegexp = require('escape-string-regexp');
 const position = require('unist-util-position');
 const rule = require('unified-lint-rule');
 const visit = require('unist-util-visit');
@@ -12,11 +13,22 @@ module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings);
 function testProhibited(val, content) {
   let regexpString = '(\\.|@[a-zA-Z0-9/-]*)?';
 
+  // eslint-disable-next-line max-len
+  const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : '';
+
   // If it starts with a letter, make sure it is a word break.
   if (/^\b/.test(val.no)) {
     regexpString += '\\b';
   }
+  if (ignoreNextTo) {
+    regexpString += `(?<!${ignoreNextTo})`;
+  }
+
   regexpString += `(${val.no})`;
+
+  if (ignoreNextTo) {
+    regexpString += `(?!${ignoreNextTo})`;
+  }
 
   // If it ends with a letter, make sure it is a word break.
   if (/\b$/.test(val.no)) {

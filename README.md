@@ -9,6 +9,7 @@ Example configuration:
     [
       { no: "End-Of-Life", yes: "End-of-Life" },
       { no: "End-of-life", yes: "End-of-Life" },
+      { no: 'gatsby', yes: "Gatsby", ignoreNextTo: "-" },
       { no: "Github", yes: "GitHub" },
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
@@ -22,12 +23,13 @@ Example configuration:
   ]
   ```
 
-The `no` values are treated are incorporated into regular expressions, which
-means that you can do fancy things with negative lookaheads and negative
-lookbehinds. For example, if you wanted to flag "gatsby" because you want it
-capitalized ("Gatsby"), but you want to allow it to appear in hyphenated strings
-(like plugin-gatsby or gatsby-module or plugin-gatsby-module):
+`no` is a string specifying the string you wish to prohibit. Regular expression
+characters are respected.
 
-```javascript
-{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }
-```
+`yes` is a string specifying what someone will be told to use instead.
+
+`ignoreNextTo` is a string that will make a prohibited string allowable if it
+appears next to that string. For example, in the configuration above, _gatsby_
+will be flagged as a problem and the user will be told to use _Gatsby_ instead.
+However, _gatsby-plugin_ will not be flagged because `'-'` is included in
+`ignoreNextTo` for that rule.
