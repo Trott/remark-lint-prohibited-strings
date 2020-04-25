@@ -25,7 +25,9 @@
   "homepage": "https://github.com/Trott/remark-lint-prohibited-strings#readme",
   "dependencies": {
     "unified-lint-rule": "^1.0.2",
-    "unist-util-visit": "^2.0.0"
+    "unist-util-position": "^3.1.0",
+    "unist-util-visit": "^2.0.0",
+    "vfile-location": "^3.0.1"
   },
   "devDependencies": {
     "c8": "^7.0.0",

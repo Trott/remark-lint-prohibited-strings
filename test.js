@@ -29,7 +29,7 @@ test('remark-lint-prohibited-strings', (t) => {
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
-      [ 'fhqwhgads.md:1:1-1:25: Use "V8" instead of "v8"' ],
+      [ 'fhqwhgads.md:1:5-1:7: Use "V8" instead of "v8"' ],
       'should flag string if option set'
     );
   }
@@ -73,7 +73,7 @@ test('remark-lint-prohibited-strings', (t) => {
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
-      [ 'fhqwhgads.md:1:1-1:29: Use "V8" instead of "v8"' ],
+      [ 'fhqwhgads.md:1:26-1:28: Use "V8" instead of "v8"' ],
       'should flag prohibited string if it is followed by . alone'
     );
   }
@@ -106,7 +106,7 @@ test('remark-lint-prohibited-strings', (t) => {
       processorWithOptions([{ yes: 'Gatsby', no: '(?<!-)gatsby(?!-)' }])
           .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
-      [ 'fhqwhgads.md:1:1-1:48: Use "Gatsby" instead of "gatsby"' ],
+      [ 'fhqwhgads.md:1:42-1:48: Use "Gatsby" instead of "gatsby"' ],
       'should still find things that do not match lookahead/lookbehind'
     );
   }
@@ -117,7 +117,7 @@ test('remark-lint-prohibited-strings', (t) => {
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
-      [ 'fhqwhgads.md:1:1-1:45: Use "V8" instead of "v8"' ],
+      [ 'fhqwhgads.md:1:36-1:38: Use "V8" instead of "v8"' ],
       'should flag prohibited string even if an allowed usage precedes it'
     );
   }
@@ -195,8 +195,8 @@ test('remark-lint-prohibited-strings', (t) => {
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [
-        'fhqwhgads.md:1:1-1:19: Use "the Node.js" instead of "Node.js\'"',
-        'fhqwhgads.md:3:1-3:24: Use "the Node.js" instead of "Node.js\'s"'
+        'fhqwhgads.md:1:5-1:13: Use "the Node.js" instead of "Node.js\'"',
+        'fhqwhgads.md:3:5-3:14: Use "the Node.js" instead of "Node.js\'s"'
       ],
       'should allow flagging of apostrophes as final characters in "no" string'
     );
