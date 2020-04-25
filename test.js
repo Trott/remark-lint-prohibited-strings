@@ -253,7 +253,7 @@ test('remark-lint-prohibited-strings', (t) => {
     const contents = 'word-gatsby gatsby-word word-gatsby-word gatsby';
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-          .processSync(vfile({ path: path, contents: contents }))
+        .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ 'fhqwhgads.md:1:42-1:48: Use "Gatsby" instead of "gatsby"' ],
       'should still find things that do not match ignoreNextTo'
@@ -264,7 +264,7 @@ test('remark-lint-prohibited-strings', (t) => {
     const contents = 'gatsbyfoo foogatsby foogatsbyfoo';
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-          .processSync(vfile({ path: path, contents: contents }))
+        .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ ],
       'should still match on word boundaries with ignoreNextTo'
@@ -275,10 +275,32 @@ test('remark-lint-prohibited-strings', (t) => {
     const contents = 'You got Sblounchsked!';
     t.deepEqual(
       processorWithOptions([{ no: 'Sblounchsked' }])
-          .processSync(vfile({ path: path, contents: contents }))
+        .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       [ 'fhqwhgads.md:1:9-1:21: Do not use "Sblounchsked"' ],
       'should permit omitting the yes option'
+    );
+  }
+
+  {
+    const contents = 'strong bad';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Strong Bad' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ 'fhqwhgads.md:1:1-1:11: Use "Strong Bad" instead of "strong bad"' ],
+      'should flag when there is a `yes` option but no `no` option'
+    );
+  }
+
+  {
+    const contents = 'Strong Bad';
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Strong Bad' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      [ ],
+      'should allow identical case with `yes` option but no `no` option'
     );
   }
   t.end();

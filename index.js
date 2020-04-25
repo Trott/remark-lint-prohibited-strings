@@ -11,6 +11,13 @@ const start = position.start;
 module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings);
 
 function testProhibited(val, content) {
+  let regexpFlags = 'g';
+
+  if (!val.no) {
+    val.no = val.yes;
+    regexpFlags += 'i';
+  }
+
   let regexpString = '(\\.|@[a-zA-Z0-9/-]*)?';
 
   const ignoreNextTo =
@@ -35,12 +42,14 @@ function testProhibited(val, content) {
     regexpString += '\\b';
   }
   regexpString += '(\\.\\w)?';
-  const re = new RegExp(regexpString, 'g');
+  const re = new RegExp(regexpString, regexpFlags);
 
   let result = null;
   const results = [];
   while (result = re.exec(content)) {
-    if (!result[1] && !result[3]) {
+    // TODO: This can now be replaced with lookarounds now that Node.js 8 is no
+    // longer supported.
+    if (!result[1] && !result[3] && result[2] !== val.yes) {
       results.push({ result: result[2], index: result.index });
     }
   }

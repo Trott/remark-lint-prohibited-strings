@@ -24,10 +24,14 @@ Example configuration:
   ```
 
 `no` is a string specifying the string you wish to prohibit. Regular expression
-characters are respected.
+characters are respected. If `no` is omitted but `yes` is supplied, then the
+`no` string will be inferred to be any case-insensitive match of the `yes`
+string that is not a case-sensitive match of the `yes` string. In other words,
+`{ yes: 'foo' }` means that _foo_ is permitted, but _Foo_ and _FOO_ are
+prohibited.
 
-`yes` is a string specifying what someone will be told to use instead. It is
-optional.
+`yes` is an optional string specifying what someone will be told to use instead
+of the matched `no` value.
 
 `ignoreNextTo` is a string that will make a prohibited string allowable if it
 appears next to that string. For example, in the configuration above, _gatsby_
