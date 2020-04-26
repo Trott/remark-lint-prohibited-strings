@@ -18,10 +18,9 @@ function testProhibited (val, content) {
     regexpFlags += 'i'
   }
 
-  let regexpString = '(\\.|@[a-zA-Z0-9/-]*)?'
+  let regexpString = '(?<!\\.|@[a-zA-Z0-9/-]*)'
 
-  const ignoreNextTo =
-    val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
+  const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
 
   // If it starts with a letter, make sure it is a word break.
   if (/^\b/.test(val.no)) {
@@ -41,16 +40,14 @@ function testProhibited (val, content) {
   if (/\b$/.test(val.no)) {
     regexpString += '\\b'
   }
-  regexpString += '(\\.\\w)?'
+  regexpString += '(?!\\.\\w)'
   const re = new RegExp(regexpString, regexpFlags)
 
   const results = []
   let result = re.exec(content)
   while (result) {
-    // TODO: This can now be replaced with lookarounds now that Node.js 8 is no
-    // longer supported.
-    if (!result[1] && !result[3] && result[2] !== val.yes) {
-      results.push({ result: result[2], index: result.index })
+    if (result[1] !== val.yes) {
+      results.push({ result: result[1], index: result.index })
     }
     result = re.exec(content)
   }
@@ -71,8 +68,7 @@ function prohibitedStrings (ast, file, strings) {
       const results = testProhibited(val, content)
       if (results.length) {
         results.forEach(({ result, index }) => {
-          const message = val.yes ? `Use "${val.yes}" instead of "${result}"`
-            : `Do not use "${result}"`
+          const message = val.yes ? `Use "${val.yes}" instead of "${result}"` : `Do not use "${result}"`
           file.message(message, {
             start: location.toPosition(initial + index),
             end: location.toPosition(initial + index + [...result].length)
