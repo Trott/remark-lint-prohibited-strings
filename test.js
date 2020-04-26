@@ -303,5 +303,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should allow identical case with `yes` option but no `no` option'
     )
   }
+
+  {
+    const contents = 'end-of-life nodefjs version'
+    t.deepEqual(
+      processorWithOptions([{ yes: 'End-of-Life' }, { yes: 'Node.js' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:1-1:12: Use "End-of-Life" instead of "end-of-life"'],
+      'should escape regexp special chars with `yes` option but no `no` option'
+    )
+  }
   t.end()
 })

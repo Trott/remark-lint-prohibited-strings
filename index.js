@@ -14,7 +14,7 @@ function testProhibited (val, content) {
   let regexpFlags = 'g'
 
   if (!val.no) {
-    val.no = val.yes
+    val.no = escapeStringRegexp(val.yes)
     regexpFlags += 'i'
   }
 
