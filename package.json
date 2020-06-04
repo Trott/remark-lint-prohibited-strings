@@ -1,6 +1,6 @@
 {
   "name": "remark-lint-prohibited-strings",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Check for prohibited strings",
   "main": "index.js",
   "scripts": {
