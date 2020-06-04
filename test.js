@@ -314,5 +314,16 @@ test('remark-lint-prohibited-strings', (t) => {
       'should escape regexp special chars with `yes` option but no `no` option'
     )
   }
+
+  {
+    const contents = 'Fhqwhgads\n\nType: End-of-life'
+    t.deepEqual(
+      processorWithOptions([{ yes: 'End-of-Life' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:3:7-3:18: Use "End-of-Life" instead of "End-of-life"'],
+      'should flag yes-only violations on lines other than the first line'
+    )
+  }
   t.end()
 })
