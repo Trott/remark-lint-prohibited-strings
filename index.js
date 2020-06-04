@@ -12,9 +12,10 @@ module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings)
 
 function testProhibited (val, content) {
   let regexpFlags = 'g'
+  let no = val.no
 
-  if (!val.no) {
-    val.no = escapeStringRegexp(val.yes)
+  if (!no) {
+    no = escapeStringRegexp(val.yes)
     regexpFlags += 'i'
   }
 
@@ -23,21 +24,21 @@ function testProhibited (val, content) {
   const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
 
   // If it starts with a letter, make sure it is a word break.
-  if (/^\b/.test(val.no)) {
+  if (/^\b/.test(no)) {
     regexpString += '\\b'
   }
   if (ignoreNextTo) {
     regexpString += `(?<!${ignoreNextTo})`
   }
 
-  regexpString += `(${val.no})`
+  regexpString += `(${no})`
 
   if (ignoreNextTo) {
     regexpString += `(?!${ignoreNextTo})`
   }
 
   // If it ends with a letter, make sure it is a word break.
-  if (/\b$/.test(val.no)) {
+  if (/\b$/.test(no)) {
     regexpString += '\\b'
   }
   regexpString += '(?!\\.\\w)'
