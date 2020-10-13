@@ -33,7 +33,7 @@
   "devDependencies": {
     "c8": "^7.0.0",
     "remark": "^12.0.0",
-    "remark-lint": "^7.0.0",
+    "remark-lint": "^8.0.0",
     "standard": "^14.3.3",
     "tape": "^5.0.0",
     "vfile": "^4.0.1"
