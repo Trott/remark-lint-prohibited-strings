@@ -37,7 +37,7 @@
     "remark": "^13.0.0",
     "remark-lint": "^8.0.0",
     "semantic-release": "^17.2.1",
-    "standard": "^14.3.3",
+    "standard": "^15.0.0",
     "tape": "^5.0.0",
     "vfile": "^4.0.1"
   },
