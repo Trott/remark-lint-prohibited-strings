@@ -71,8 +71,8 @@ function prohibitedStrings (ast, file, strings) {
         results.forEach(({ result, index }) => {
           const message = val.yes ? `Use "${val.yes}" instead of "${result}"` : `Do not use "${result}"`
           file.message(message, {
-            start: location.toPosition(initial + index),
-            end: location.toPosition(initial + index + [...result].length)
+            start: location.toPoint(initial + index),
+            end: location.toPoint(initial + index + [...result].length)
           })
         })
       }
