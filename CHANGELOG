@@ -1,0 +1,11 @@
+# [2.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v1.5.2...v2.0.0) (2021-04-26)
+
+
+### chore
+
+* drop support for 10.x and add support for 16.x ([39b7019](https://github.com/Trott/remark-lint-prohibited-strings/commit/39b7019cc23984a5bb7ae123cc3ab96ae06592e1))
+
+
+### BREAKING CHANGES
+
+* drop support for Node.js 10.x
