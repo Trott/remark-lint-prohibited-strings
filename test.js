@@ -1,10 +1,10 @@
 'use strict'
 
-const test = require('tape')
-const remark = require('remark')
-const lint = require('remark-lint')
-const vfile = require('vfile')
-const noProhibitedStrings = require('./')
+import { test } from 'tape'
+import remark from 'remark'
+import lint from 'remark-lint'
+import vfile from 'vfile'
+import noProhibitedStrings from './index.js'
 
 const processorWithOptions =
   (options) => remark().use(lint).use(noProhibitedStrings, options)

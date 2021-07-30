@@ -1,14 +1,12 @@
-'use strict'
-
-const escapeStringRegexp = require('escape-string-regexp')
-const position = require('unist-util-position')
-const rule = require('unified-lint-rule')
-const visit = require('unist-util-visit')
-const vfileLocation = require('vfile-location')
+import escapeStringRegexp from 'escape-string-regexp'
+import position from 'unist-util-position'
+import rule from 'unified-lint-rule'
+import { visit } from 'unist-util-visit'
+import vfileLocation from 'vfile-location'
 
 const start = position.start
 
-module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings)
+export default rule('remark-lint:prohibited-strings', prohibitedStrings)
 
 function testProhibited (val, content) {
   let regexpFlags = 'g'
