@@ -349,7 +349,6 @@ test('remark-lint-prohibited-strings', (t) => {
       'should use capture groups in replacement messages'
     )
   }
-  // fhqwhgads.md:1:1-1:7: Use "RFC $1" instead of "rfc123"
 
   t.end()
 })
