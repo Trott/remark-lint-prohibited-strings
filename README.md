@@ -41,7 +41,7 @@ However, _gatsby-plugin_ will not be flagged because `'-'` is included in
 
 If `replaceCaptureGroups` is set to a truthy value, the message reported to the
 user will have capture groups and other replacements supplied from the regular
-expression match according to the replacement string in
+expression match using the same process as the replacement string in
 `String.prototype.replace()`. It defaults to `false`. For example,
 `{ no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1" }` will tell the user to use
 `"RFC $1"` by default. With `replaceCapture` set to `true`, it would instead
