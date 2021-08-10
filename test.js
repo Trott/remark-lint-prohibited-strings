@@ -325,5 +325,31 @@ test('remark-lint-prohibited-strings', (t) => {
       'should flag yes-only violations on lines other than the first line'
     )
   }
+
+  {
+    const contents = 'rfc123'
+    t.deepEqual(
+      processorWithOptions([
+        { no: '[Rr][Ff][Cc](\\d+)', yes: 'RFC $1', replaceCaptureGroups: true }
+      ])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:1-1:7: Use "RFC 123" instead of "rfc123"'],
+      'should use capture groups in replacement messages'
+    )
+  }
+
+  {
+    const contents = 'rfc123'
+    t.deepEqual(
+      processorWithOptions([{ no: '[Rr][Ff][Cc](\\d+)', yes: 'RFC $1' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:1-1:7: Use "RFC $1" instead of "rfc123"'],
+      'should use capture groups in replacement messages'
+    )
+  }
+  // fhqwhgads.md:1:1-1:7: Use "RFC $1" instead of "rfc123"
+
   t.end()
 })
