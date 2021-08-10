@@ -38,3 +38,12 @@ appears next to that string. For example, in the configuration above, _gatsby_
 will be flagged as a problem and the user will be told to use _Gatsby_ instead.
 However, _gatsby-plugin_ will not be flagged because `'-'` is included in
 `ignoreNextTo` for that rule.
+
+If `replaceCaptureGroups` is set to a truthy value, the message reported to the
+user will have capture groups and other replacements supplied from the regular
+expression match according to the replacement string in
+`String.prototype.replace()`. It defaults to `false`. For example,
+`{ no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1" }` will tell the user to use
+`"RFC $1"` by default. With `replaceCapture` set to `true`, it would instead
+tell the user to (for example) use `"RFC 123"` instead of `"rfc123"`.
+

@@ -22,6 +22,7 @@ function testProhibited (val, content) {
   let regexpString = '(?<!\\.|@[a-zA-Z0-9/-]*)'
 
   const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
+  const replaceCaptureGroups = !!val.replaceCaptureGroups
 
   // If it starts with a letter, make sure it is a word break.
   if (/^\b/.test(no)) {
@@ -48,7 +49,11 @@ function testProhibited (val, content) {
   let result = re.exec(content)
   while (result) {
     if (result[1] !== val.yes) {
-      results.push({ result: result[1], index: result.index })
+      let yes = val.yes
+      if (replaceCaptureGroups) {
+        yes = result[1].replace(new RegExp(no), yes)
+      }
+      results.push({ result: result[1], index: result.index, yes: yes })
     }
     result = re.exec(content)
   }
@@ -68,8 +73,8 @@ function prohibitedStrings (ast, file, strings) {
     strings.forEach((val) => {
       const results = testProhibited(val, content)
       if (results.length) {
-        results.forEach(({ result, index }) => {
-          const message = val.yes ? `Use "${val.yes}" instead of "${result}"` : `Do not use "${result}"`
+        results.forEach(({ result, index, yes }) => {
+          const message = val.yes ? `Use "${yes}" instead of "${result}"` : `Do not use "${result}"`
           file.message(message, {
             start: location.toPoint(initial + index),
             end: location.toPoint(initial + index + [...result].length)
