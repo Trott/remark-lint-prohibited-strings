@@ -346,7 +346,31 @@ test('remark-lint-prohibited-strings', (t) => {
         .processSync(vfile({ path: path, contents: contents }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:7: Use "RFC $1" instead of "rfc123"'],
+      'should not use capture groups in replacement messages without option'
+    )
+  }
+
+  {
+    const contents = "Do you think they'll do that?"
+    t.deepEqual(
+      processorWithOptions([
+        { no: "(\\w+)'ll", yes: '$1 will', replaceCaptureGroups: true }
+      ])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:14-1:21: Use "they will" instead of "they\'ll"'],
       'should use capture groups in replacement messages'
+    )
+  }
+
+  {
+    const contents = "Do you think they'll do that?"
+    t.deepEqual(
+      processorWithOptions([{ no: "(\\w+)'ll", yes: '$1 will' }])
+        .processSync(vfile({ path: path, contents: contents }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:14-1:21: Use "$1 will" instead of "they\'ll"'],
+      'should not use capture groups in replacement messages without option'
     )
   }
 
