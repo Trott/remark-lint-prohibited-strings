@@ -4,8 +4,9 @@ remark-lint plugin to prohibit specified strings in markdown files
 Example configuration:
 
 ```javascript
-  [
-    require("remark-lint-prohibited-strings"),
+{
+  "plugins": [
+    "remark-lint-prohibited-strings",
     [
       { no: "End-Of-Life", yes: "End-of-Life" },
       { no: "End-of-life", yes: "End-of-Life" },
@@ -21,6 +22,7 @@ Example configuration:
       { no: "v8", yes: "V8" }
     ]
   ]
+}
   ```
 
 `no` is a string specifying the string you wish to prohibit. Regular expression
