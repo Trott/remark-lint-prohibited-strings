@@ -1,14 +1,14 @@
 'use strict'
 
-const escapeStringRegexp = require('escape-string-regexp')
-const position = require('unist-util-position')
-const rule = require('unified-lint-rule')
-const visit = require('unist-util-visit')
-const vfileLocation = require('vfile-location')
+import escapeStringRegexp from 'escape-string-regexp'
+import { pointStart } from 'unist-util-position'
+import { lintRule } from 'unified-lint-rule'
+import { visit } from 'unist-util-visit'
+import { location } from 'vfile-location'
 
-const start = position.start
+const remarkLintProhibitedStrings = lintRule('remark-lint:prohibited-strings', prohibitedStrings)
 
-module.exports = rule('remark-lint:prohibited-strings', prohibitedStrings)
+export default remarkLintProhibitedStrings
 
 function testProhibited (val, content) {
   let regexpFlags = 'g'
@@ -62,13 +62,13 @@ function testProhibited (val, content) {
 }
 
 function prohibitedStrings (ast, file, strings) {
-  const location = vfileLocation(file)
+  const myLocation = location(file)
 
   visit(ast, 'text', checkText)
 
   function checkText (node) {
     const content = node.value
-    const initial = start(node).offset
+    const initial = pointStart(node).offset
 
     strings.forEach((val) => {
       const results = testProhibited(val, content)
@@ -76,8 +76,8 @@ function prohibitedStrings (ast, file, strings) {
         results.forEach(({ result, index, yes }) => {
           const message = val.yes ? `Use "${yes}" instead of "${result}"` : `Do not use "${result}"`
           file.message(message, {
-            start: location.toPoint(initial + index),
-            end: location.toPoint(initial + index + [...result].length)
+            start: myLocation.toPoint(initial + index),
+            end: myLocation.toPoint(initial + index + [...result].length)
           })
         })
       }

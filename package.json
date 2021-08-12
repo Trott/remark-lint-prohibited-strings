@@ -2,6 +2,7 @@
   "name": "remark-lint-prohibited-strings",
   "version": "2.1.0",
   "description": "Check for prohibited strings",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "standard && c8 --check-coverage --lines 100 --functions 100 --branches 100 node test.js"
@@ -24,18 +25,17 @@
   },
   "homepage": "https://github.com/Trott/remark-lint-prohibited-strings#readme",
   "dependencies": {
-    "escape-string-regexp": "^4.0.0",
-    "unified-lint-rule": "^1.0.2",
-    "unist-util-position": "^3.1.0",
-    "unist-util-visit": "^2.0.0",
-    "vfile-location": "^3.0.1"
+    "escape-string-regexp": "^5.0.0",
+    "unified-lint-rule": "^2.0.0",
+    "unist-util-position": "^4.0.1",
+    "unist-util-visit": "^4.0.0",
+    "vfile-location": "^4.0.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "c8": "^7.0.0",
-    "remark": "^13.0.0",
-    "remark-lint": "^8.0.0",
+    "remark": "^14.0.1",
     "semantic-release": "^17.2.1",
     "standard": "^16.0.0",
     "tape": "^5.0.0",
@@ -51,7 +51,7 @@
       [
         "@semantic-release/changelog",
         {
-          "changelogFile": "CHANGELOG"
+          "changelogFile": "CHANGELOG.md"
         }
       ],
       "@semantic-release/npm",
@@ -59,7 +59,7 @@
         "@semantic-release/git",
         {
           "assets": [
-            "CHANGELOG",
+            "CHANGELOG.md",
             "package.json"
           ],
           "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
