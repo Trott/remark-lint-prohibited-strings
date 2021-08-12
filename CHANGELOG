@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v2.0.0...v2.1.0) (2021-08-12)
+
+
+### Features
+
+* add replaceCaptureGroups option ([ecf9caa](https://github.com/Trott/remark-lint-prohibited-strings/commit/ecf9caac4638272b4cf0625f8a7da66d5941f404))
+
 # [2.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v1.5.2...v2.0.0) (2021-04-26)
 
 
