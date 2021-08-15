@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v2.1.0...v3.0.0) (2021-08-15)
+
+
+### chore
+
+* update to ESM-only remark-lint@9.0.0 ([5330580](https://github.com/Trott/remark-lint-prohibited-strings/commit/53305803fe28e6f0698a1be6270781ca7f7fbe9e))
+
+
+### BREAKING CHANGES
+
+* ESM-only
+
 # [2.1.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v2.0.0...v2.1.0) (2021-08-12)
 
 
