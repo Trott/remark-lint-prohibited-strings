@@ -2,7 +2,7 @@
 
 import { test } from 'tape'
 import { remark } from 'remark'
-import vfile from 'vfile'
+import { VFile } from 'vfile'
 import remarkLintProhibitedStrings from './index.js'
 
 const processorWithOptions =
@@ -12,10 +12,10 @@ test('remark-lint-prohibited-strings', (t) => {
   const path = 'fhqwhgads.md'
 
   {
-    const contents = 'the v8 javascript engine'
+    const value = 'the v8 javascript engine'
     t.deepEqual(
       processorWithOptions([])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should not flag anything if no options set'
@@ -23,10 +23,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'the v8 javascript engine'
+    const value = 'the v8 javascript engine'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:5-1:7: Use "V8" instead of "v8"'],
       'should flag string if option set'
@@ -34,10 +34,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'the V8 JavaScript engine'
+    const value = 'the V8 JavaScript engine'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should not flag string if it is not prohibited'
@@ -45,10 +45,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '# fhqwhgads.v8'
+    const value = '# fhqwhgads.v8'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore prohibited string if it is in code (preceded by .)'
@@ -56,10 +56,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '# v8.fhqwhgads'
+    const value = '# v8.fhqwhgads'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore prohibited string if it is in code (followed by .word)'
@@ -67,10 +67,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'The name of this band is v8.'
+    const value = 'The name of this band is v8.'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:26-1:28: Use "V8" instead of "v8"'],
       'should flag prohibited string if it is followed by . alone'
@@ -78,10 +78,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'The gatsby-specific way to do this is as follows:'
+    const value = 'The gatsby-specific way to do this is as follows:'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby(?!-)\\b' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should allow negative lookaheads with custom regular expression config'
@@ -89,10 +89,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'word-gatsby gatsby-word word-gatsby-word'
+    const value = 'word-gatsby gatsby-word word-gatsby-word'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should allow negative lookaheads and lookbehinds'
@@ -100,10 +100,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'word-gatsby gatsby-word word-gatsby-word gatsby'
+    const value = 'word-gatsby gatsby-word word-gatsby-word gatsby'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:42-1:48: Use "Gatsby" instead of "gatsby"'],
       'should still find things that do not match lookahead/lookbehind'
@@ -111,10 +111,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'gatsbyfoo foogatsby foogatsbyfoo'
+    const value = 'gatsbyfoo foogatsby foogatsbyfoo'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: '\\b(?<!-)gatsby(?!-)\\b' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should still match on word boundaries with lookahead/lookbehind'
@@ -122,10 +122,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'The fhqwhgads.v8 page for the band v8 rocks.'
+    const value = 'The fhqwhgads.v8 page for the band v8 rocks.'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:36-1:38: Use "V8" instead of "v8"'],
       'should flag prohibited string even if an allowed usage precedes it'
@@ -133,10 +133,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '@nodejs/v8-inspector'
+    const value = '@nodejs/v8-inspector'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore prohibited string if it is part of an @-mention'
@@ -144,10 +144,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '@Nodejs/v8-inspector'
+    const value = '@Nodejs/v8-inspector'
     t.deepEqual(
       processorWithOptions([{ yes: 'V8', no: 'v8' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore prohibited string if it is part of an @-Mention'
@@ -155,10 +155,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'RfC123'
+    const value = 'RfC123'
     t.deepEqual(
       processorWithOptions([{ yes: 'RFC <number>', no: '[Rr][Ff][Cc]\\d+' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:7: Use "RFC <number>" instead of "RfC123"'],
       'should provide reasonable output from regexp-y things'
@@ -166,10 +166,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'denote that'
+    const value = 'denote that'
     t.deepEqual(
       processorWithOptions([{ no: 'note that', yes: '<nothing>' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should assume word breaks'
@@ -177,10 +177,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '`the-gatsby-kebab-in-code`'
+    const value = '`the-gatsby-kebab-in-code`'
     t.deepEqual(
       processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore strings in backticks'
@@ -188,10 +188,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = '```\nthe-gatsby-kebab-in-code\n```'
+    const value = '```\nthe-gatsby-kebab-in-code\n```'
     t.deepEqual(
       processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should ignore strings in code fences'
@@ -199,10 +199,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = "for Node.js' stuff\n\nand Node.js's stuff too"
+    const value = "for Node.js' stuff\n\nand Node.js's stuff too"
     t.deepEqual(
       processorWithOptions([{ no: "Node\\.js's?", yes: 'the Node.js' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [
         'fhqwhgads.md:1:5-1:13: Use "the Node.js" instead of "Node.js\'"',
@@ -213,10 +213,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'gatsby Gatsby gatsby'
+    const value = 'gatsby Gatsby gatsby'
     t.deepEqual(
       processorWithOptions([{ no: 'gatsby', yes: 'Gatsby' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [
         'fhqwhgads.md:1:1-1:7: Use "Gatsby" instead of "gatsby"',
@@ -227,10 +227,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'The gatsby-specific way to do this is as follows:'
+    const value = 'The gatsby-specific way to do this is as follows:'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should respect ignoreNextTo'
@@ -238,10 +238,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'word-gatsby gatsby-word word-gatsby-word'
+    const value = 'word-gatsby gatsby-word word-gatsby-word'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should respect multiple ignoreNextTo occurrences'
@@ -249,10 +249,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'word-gatsby gatsby-word word-gatsby-word gatsby'
+    const value = 'word-gatsby gatsby-word word-gatsby-word gatsby'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:42-1:48: Use "Gatsby" instead of "gatsby"'],
       'should still find things that do not match ignoreNextTo'
@@ -260,10 +260,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'gatsbyfoo foogatsby foogatsbyfoo'
+    const value = 'gatsbyfoo foogatsby foogatsbyfoo'
     t.deepEqual(
       processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo: '-' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should still match on word boundaries with ignoreNextTo'
@@ -271,10 +271,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'You got Sblounchsked!'
+    const value = 'You got Sblounchsked!'
     t.deepEqual(
       processorWithOptions([{ no: 'Sblounchsked' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:9-1:21: Do not use "Sblounchsked"'],
       'should permit omitting the yes option'
@@ -282,10 +282,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'strong bad'
+    const value = 'strong bad'
     t.deepEqual(
       processorWithOptions([{ yes: 'Strong Bad' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:11: Use "Strong Bad" instead of "strong bad"'],
       'should flag when there is a `yes` option but no `no` option'
@@ -293,10 +293,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'Strong Bad'
+    const value = 'Strong Bad'
     t.deepEqual(
       processorWithOptions([{ yes: 'Strong Bad' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
       'should allow identical case with `yes` option but no `no` option'
@@ -304,10 +304,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'end-of-life nodefjs version'
+    const value = 'end-of-life nodefjs version'
     t.deepEqual(
       processorWithOptions([{ yes: 'End-of-Life' }, { yes: 'Node.js' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:12: Use "End-of-Life" instead of "end-of-life"'],
       'should escape regexp special chars with `yes` option but no `no` option'
@@ -315,10 +315,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'Fhqwhgads\n\nType: End-of-life'
+    const value = 'Fhqwhgads\n\nType: End-of-life'
     t.deepEqual(
       processorWithOptions([{ yes: 'End-of-Life' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:3:7-3:18: Use "End-of-Life" instead of "End-of-life"'],
       'should flag yes-only violations on lines other than the first line'
@@ -326,12 +326,12 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'rfc123'
+    const value = 'rfc123'
     t.deepEqual(
       processorWithOptions([
         { no: '[Rr][Ff][Cc](\\d+)', yes: 'RFC $1', replaceCaptureGroups: true }
       ])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:7: Use "RFC 123" instead of "rfc123"'],
       'should use capture groups in replacement messages'
@@ -339,10 +339,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = 'rfc123'
+    const value = 'rfc123'
     t.deepEqual(
       processorWithOptions([{ no: '[Rr][Ff][Cc](\\d+)', yes: 'RFC $1' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:1-1:7: Use "RFC $1" instead of "rfc123"'],
       'should not use capture groups in replacement messages without option'
@@ -350,12 +350,12 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = "Do you think they'll do that?"
+    const value = "Do you think they'll do that?"
     t.deepEqual(
       processorWithOptions([
         { no: "(\\w+)'ll", yes: '$1 will', replaceCaptureGroups: true }
       ])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:14-1:21: Use "they will" instead of "they\'ll"'],
       'should use capture groups in replacement messages'
@@ -363,10 +363,10 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const contents = "Do you think they'll do that?"
+    const value = "Do you think they'll do that?"
     t.deepEqual(
       processorWithOptions([{ no: "(\\w+)'ll", yes: '$1 will' }])
-        .processSync(vfile({ path: path, contents: contents }))
+        .processSync(new VFile({ path, value }))
         .messages.map(String),
       ['fhqwhgads.md:1:14-1:21: Use "$1 will" instead of "they\'ll"'],
       'should not use capture groups in replacement messages without option'
