@@ -1,8 +1,8 @@
 # remark-lint-prohibited-strings
-remark-lint plugin to prohibit specified strings in markdown files
+
+A [remark-lint](https://www.npmjs.com/package/remark-lint) plugin to prohibit specified strings in markdown files. It can be used to lint consistent spelling, abbreviations, or syntax within the text of markdown files (e.g. it will not lint [code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks)).
 
 Example configuration:
-
 ```javascript
 {
   "plugins": [
@@ -14,38 +14,36 @@ Example configuration:
       { no: "Github", yes: "GitHub" },
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
-      { no: "Rfc", yes: "RFC" },
-      { no: "[Rr][Ff][Cc]\\d+", yes: "RFC <number>" },
-      { no: "rfc", yes: "RFC" },
-      { no: "UNIX", yes: "Unix" },
-      { no: "unix", yes: "Unix" },
-      { no: "v8", yes: "V8" }
+      { no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1", replaceCaptureGroups: true },
+      { no: "v8", yes: "V8" },
+      { yes: 'Unix' }
     ]
   ]
 }
-  ```
+```
 
-`no` is a string specifying the string you wish to prohibit. Regular expression
-characters are respected. If `no` is omitted but `yes` is supplied, then the
-`no` string will be inferred to be any case-insensitive match of the `yes`
-string that is not a case-sensitive match of the `yes` string. In other words,
-`{ yes: 'foo' }` means that _foo_ is permitted, but _Foo_ and _FOO_ are
-prohibited.
+## Configuration
 
-`yes` is an optional string specifying what someone will be told to use instead
-of the matched `no` value.
+### no
 
-`ignoreNextTo` is a string that will make a prohibited string allowable if it
-appears next to that string. For example, in the configuration above, _gatsby_
-will be flagged as a problem and the user will be told to use _Gatsby_ instead.
-However, _gatsby-plugin_ will not be flagged because `'-'` is included in
-`ignoreNextTo` for that rule.
+`string`, _optional_
 
-If `replaceCaptureGroups` is set to a truthy value, the message reported to the
-user will have capture groups and other replacements supplied from the regular
-expression match using the same process as the replacement string in
-`String.prototype.replace()`. It defaults to `false`. For example,
-`{ no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1" }` will tell the user to use
-`"RFC $1"` by default. With `replaceCapture` set to `true`, it would instead
-tell the user to (for example) use `"RFC 123"` instead of `"rfc123"`.
+Specifies the string you wish to prohibit. [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) are respected, but can only be supplied as a string. If `no` is provided, the value must be a string, and the match is case-sensitive.  If omitted, then the `no` string will default to be the case-insensitive match of `yes`. For example, in the configuration above, users will be told to use "Unix" instead of "unix", or "UNIX".
 
+### yes
+
+`string`, _optional_
+
+Specifies what users will be told to use instead of the matched `no` value (if provided). For example, in the configuration above, users will be told to use "GitHub" instead of "Github".
+
+### ignoreNextTo
+
+`string`, _optional_
+
+Makes a prohibited string allowable if it appears next to that string. It is interpreted as a literal sequence of character(s) that appear immediately before or after the `yes` text. For example, in the configuration above, users will be told to use "Gatsby" instead of "gatsby". However, "gatsby-plugin" and "node-gatsby" will not be flagged because `'-'` is included in `ignoreNextTo` for that rule.
+
+### replaceCaptureGroups
+
+`boolean`, _optional_
+
+Defaults to `false`. If set to a truthy value, it enables replacement of [regular expression capture groups](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Groups_and_Ranges#using_groups), that are matched in the `no` regular expression, with group placeholders in `yes`. It can be used to provide better linting messages. The message reported to the user will use the same process as the the replacement string in [String.prototype.replace()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace). For example, in the configuration above, users will be told to use "RFC 123" instead of "rfc123", "RFC123", or "Rfc123".
