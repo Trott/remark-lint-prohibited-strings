@@ -15,37 +15,38 @@ Example configuration:
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
       { no: "Rfc", yes: "RFC" },
-      { no: "[Rr][Ff][Cc]\\d+", yes: "RFC <number>" },
+      { no: "[Rr][Ff][Cc]\\d+", yes: "RFC $1", replaceCapture: true },
       { no: "rfc", yes: "RFC" },
       { no: "UNIX", yes: "Unix" },
       { no: "unix", yes: "Unix" },
-      { no: "v8", yes: "V8" }
+      { no: "v8", yes: "V8" },
+      { yes: 'Docker' }
     ]
   ]
 }
-  ```
+```
 
-`no` is a string specifying the string you wish to prohibit. Regular expression
-characters are respected. If `no` is omitted but `yes` is supplied, then the
-`no` string will be inferred to be any case-insensitive match of the `yes`
-string that is not a case-sensitive match of the `yes` string. In other words,
-`{ yes: 'foo' }` means that _foo_ is permitted, but _Foo_ and _FOO_ are
-prohibited.
+`yes` [string] _required_ - Specifies what users will be told to use instead
+of the matched `no` value (if provided). For example, in the configuration
+above, users will be told to use _GitHub_ instead of any other variation of it.
 
-`yes` is an optional string specifying what someone will be told to use instead
-of the matched `no` value.
+`no` [string | regex] _optional_ - Specifies the string you wish to prohibit. If
+omitted, then the `no` string will be inferred to be a string literal,
+case-insensitive match of `yes`. For example, in the configuration above,
+_docker_ and _DOCKER_ will be flagged as prohibited strings.
 
-`ignoreNextTo` is a string that will make a prohibited string allowable if it
-appears next to that string. For example, in the configuration above, _gatsby_
-will be flagged as a problem and the user will be told to use _Gatsby_ instead.
-However, _gatsby-plugin_ will not be flagged because `'-'` is included in
-`ignoreNextTo` for that rule.
+`ignoreNextTo` [string] _optional_ - Makes a prohibited string allowable if it
+appears next to that string. It is interpreted as a literal sequence of
+character(s) that appear immediately before or after the `yes` text. For
+example, in the configuration above, _gatsby_ will be flagged as a problem and
+the user will be told to use _Gatsby_ instead. However, _gatsby-plugin_ will not
+be flagged because `'-'` is included in `ignoreNextTo` for that rule.
 
-If `replaceCaptureGroups` is set to a truthy value, the message reported to the
-user will have capture groups and other replacements supplied from the regular
+`replaceCaptureGroups` - [boolean] _optional_ - Enables replacement of regular
+expression capture groups. Defaults to `false`. If set to a truthy value, the
+message reported to the user will have capture groups supplied from the regular
 expression match using the same process as the replacement string in
-`String.prototype.replace()`. It defaults to `false`. For example,
-`{ no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1" }` will tell the user to use
-`"RFC $1"` by default. With `replaceCapture` set to `true`, it would instead
-tell the user to (for example) use `"RFC 123"` instead of `"rfc123"`.
-
+[String.prototype.replace()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace).
+For example, in the configuration above for
+`"[Rr][Ff][Cc](\\d+)"`, and given an input text of "rfc123", the rule will tell
+the user to use `"RFC 123"` instead of `"rfc123"`.
