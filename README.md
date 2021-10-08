@@ -28,7 +28,7 @@ Example configuration:
 
 `yes` [string] _required_ - Specifies what users will be told to use instead
 of the matched `no` value (if provided). For example, in the configuration
-above, users will be told to use _GitHub_ instead of any other variation of it.
+above, users will be told to use _GitHub_ instead of _Github_.
 
 `no` [string | regex] _optional_ - Specifies the string you wish to prohibit. If
 omitted, then the `no` string will be inferred to be a string literal,
