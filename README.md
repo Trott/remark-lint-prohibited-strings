@@ -22,7 +22,7 @@ Example configuration:
 }
 ```
 
-## Configuration options
+## Configuration
 
 ### yes
 
