@@ -314,13 +314,25 @@ test('remark-lint-prohibited-strings', (t) => {
         .processSync(new VFile({ path, value }))
         .messages.map(String),
       [],
-      'should not match on any item in ignoreNextTo items'
+      'should respect multiple occurrences of multiple ignoreNextTo array items including regex'
+    )
+  }
+
+  {
+    const value = 'our pre-sales, post-sales, and sales-figures'
+    const ignoreNextTo = ['pre-', 'post-', '-figures']
+    t.deepEqual(
+      processorWithOptions([{ no: 'sales', yes: 'Sales', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [],
+      'should respect multiple occurrences of multiple ignoreNextTo array words'
     )
   }
 
   {
     const value = 'see rfc-3986'
-    const ignoreNextTo = ['"']
+    const ignoreNextTo = ['"', '@', '#']
     t.deepEqual(
       processorWithOptions([{ no: 'rfc', yes: 'RFC', ignoreNextTo }])
         .processSync(new VFile({ path, value }))
