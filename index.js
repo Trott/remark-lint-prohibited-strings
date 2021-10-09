@@ -10,6 +10,19 @@ const remarkLintProhibitedStrings = lintRule('remark-lint:prohibited-strings', p
 
 export default remarkLintProhibitedStrings
 
+/*
+`ignoreNextTo` [string | string[]] _optional_ - Makes a prohibited string
+allowable if it appears next to that string. As a string, it is interpreted as a
+literal sequence of character(s) that appear immediately before or after the
+`yes` text. For example, in the configuration above, _gatsby_ will be flagged as
+a problem and the user will be told to use _Gatsby_ instead. However,
+_gatsby-plugin_ will not be flagged because `'-'` is included in `ignoreNextTo`
+for that rule. As an array, the item(s) are combined into a
+[regex or condition](https://www.ocpsoft.org/tutorials/regular-expressions/or-in-regex/)
+to match a number of possible sequence of characters(s) that might appear
+immediately before or after the `yes` text.
+*/
+
 function testProhibited (val, content) {
   let regexpFlags = 'g'
   let no = val.no
@@ -20,8 +33,16 @@ function testProhibited (val, content) {
   }
 
   let regexpString = '(?<!\\.|@[a-zA-Z0-9/-]*)'
-
-  const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
+  let ignoreNextTo
+  if (val.ignoreNextTo) {
+    if (Array.isArray(val.ignoreNextTo)) {
+      ignoreNextTo = `(?:${val.ignoreNextTo.join('|')})`
+    } else {
+      ignoreNextTo = escapeStringRegexp(val.ignoreNextTo)
+    }
+  } else {
+    ignoreNextTo = ''
+  }
   const replaceCaptureGroups = !!val.replaceCaptureGroups
 
   // If it starts with a letter, make sure it is a word break.
