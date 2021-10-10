@@ -24,17 +24,17 @@ Example configuration:
 
 ## Configuration
 
-### yes
-
-`string`, _required_
-
-Specifies what users will be told to use instead of the matched `no` value (if provided). For example, in the configuration above, users will be told to use "GitHub" instead of "Github".
-
 ### no
 
 `string`, _optional_
 
 Specifies the string you wish to prohibit. [Regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) are respected, but can only be supplied as a string. If `no` is provided, the value must be a string, and the match is case-sensitive.  If omitted, then the `no` string will default to be the case-insensitive match of `yes`. For example, in the configuration above, users will be told to use "Unix" instead of "unix", or "UNIX".
+
+### yes
+
+`string`, _optional_
+
+Specifies what users will be told to use instead of the matched `no` value (if provided). For example, in the configuration above, users will be told to use "GitHub" instead of "Github".
 
 ### ignoreNextTo
 
