@@ -14,7 +14,7 @@ Example configuration:
       { no: "Github", yes: "GitHub" },
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
-      { no: "[Rr][Ff][Cc]\\d+", yes: "RFC $1", replaceCapture: true },
+      { no: "[Rr][Ff][Cc](\\d+)", yes: "RFC $1", replaceCaptureGroups: true },
       { no: "v8", yes: "V8" },
       { yes: 'Unix' }
     ]
