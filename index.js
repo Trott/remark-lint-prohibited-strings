@@ -10,19 +10,6 @@ const remarkLintProhibitedStrings = lintRule('remark-lint:prohibited-strings', p
 
 export default remarkLintProhibitedStrings
 
-/*
-`ignoreNextTo` [string | string[]] _optional_ - Makes a prohibited string
-allowable if it appears next to that string. As a string, it is interpreted as a
-literal sequence of character(s) that appear immediately before or after the
-`yes` text. For example, in the configuration above, _gatsby_ will be flagged as
-a problem and the user will be told to use _Gatsby_ instead. However,
-_gatsby-plugin_ will not be flagged because `'-'` is included in `ignoreNextTo`
-for that rule. As an array, the item(s) are combined into a
-[regex or condition](https://www.ocpsoft.org/tutorials/regular-expressions/or-in-regex/)
-to match a number of possible sequence of characters(s) that might appear
-immediately before or after the `yes` text.
-*/
-
 function testProhibited (val, content) {
   let regexpFlags = 'g'
   let no = val.no
