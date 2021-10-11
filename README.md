@@ -11,6 +11,7 @@ Example configuration:
       { no: "End-Of-Life", yes: "End-of-Life" },
       { no: "End-of-life", yes: "End-of-Life" },
       { no: 'gatsby', yes: "Gatsby", ignoreNextTo: "-" },
+      { no: 'sales', yes: "Sales", ignoreNextTo: [ "-", "\'", "'" ] },
       { no: "Github", yes: "GitHub" },
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
