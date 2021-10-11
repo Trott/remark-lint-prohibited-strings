@@ -38,7 +38,7 @@ Specifies what users will be told to use instead of the matched `no` value (if p
 
 ### ignoreNextTo
 
-`string`, _optional_
+`string` | `string []`, _optional_
 
 Makes a prohibited string allowable if it appears next to that string. It is interpreted as a literal sequence of character(s) that appear immediately before or after the `yes` text. For example, in the configuration above, users will be told to use "Gatsby" instead of "gatsby". However, "gatsby-plugin" and "node-gatsby" will not be flagged because `'-'` is included in `ignoreNextTo` for that rule.
 
