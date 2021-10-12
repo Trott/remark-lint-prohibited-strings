@@ -20,8 +20,17 @@ function testProhibited (val, content) {
   }
 
   let regexpString = '(?<!\\.|@[a-zA-Z0-9/-]*)'
-
-  const ignoreNextTo = val.ignoreNextTo ? escapeStringRegexp(val.ignoreNextTo) : ''
+  let ignoreNextTo
+  if (val.ignoreNextTo) {
+    if (Array.isArray(val.ignoreNextTo)) {
+      const parts = val.ignoreNextTo.map(a => escapeStringRegexp(a)).join('|')
+      ignoreNextTo = `(?:${parts})`
+    } else {
+      ignoreNextTo = escapeStringRegexp(val.ignoreNextTo)
+    }
+  } else {
+    ignoreNextTo = ''
+  }
   const replaceCaptureGroups = !!val.replaceCaptureGroups
 
   // If it starts with a letter, make sure it is a word break.

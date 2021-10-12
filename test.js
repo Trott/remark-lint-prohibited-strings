@@ -271,6 +271,98 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
+    const value = 'The gatsby-specific way to do this is as follows:'
+    const ignoreNextTo = ['-']
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [],
+      'should respect single occurence of one ignoreNextTo array item'
+    )
+  }
+
+  {
+    const value = 'word-gatsby gatsby-word word-gatsby-word'
+    const ignoreNextTo = ['-']
+    t.deepEqual(
+      processorWithOptions([{ yes: 'Gatsby', no: 'gatsby', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [],
+      'should respect multiple occurrences of a one ignoreNextTo array item'
+    )
+  }
+
+  {
+    const value = 'we are pro-rfc, see rfc-3986, rfc@3986'
+    const ignoreNextTo = ['-', '@']
+    t.deepEqual(
+      processorWithOptions([{ no: 'rfc', yes: 'RFC', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [],
+      'should respect multiple occurrences of multiple ignoreNextTo array items'
+    )
+  }
+
+  {
+    const value = 'use rfc.3986, "rfc", /rfc and rfc='
+    const ignoreNextTo = ['.', '"', '/']
+    t.deepEqual(
+      processorWithOptions([{ no: 'rfc', yes: 'RFC', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:31-1:34: Use "RFC" instead of "rfc"'],
+      'should respect multiple occurrences of multiple ignoreNextTo array items including regex'
+    )
+  }
+
+  {
+    const value = 'our pre-sales, post-sales, and sales-figures'
+    const ignoreNextTo = ['pre-', 'post-', '-figures']
+    t.deepEqual(
+      processorWithOptions([{ no: 'sales', yes: 'Sales', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [],
+      'should respect multiple occurrences of multiple ignoreNextTo array words'
+    )
+  }
+
+  {
+    const value = 'see rfc-3986'
+    const ignoreNextTo = ['"', '@', '#']
+    t.deepEqual(
+      processorWithOptions([{ no: 'rfc', yes: 'RFC', ignoreNextTo }])
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      ['fhqwhgads.md:1:5-1:8: Use "RFC" instead of "rfc"'],
+      'should flag text that is not in ignoreNextTo items'
+    )
+  }
+
+  {
+    const value = 'see rfc 3986, rfc, rfc1234 but not rfc-folder or me@rfc.io'
+    const options = [{
+      yes: 'RFC-$1',
+      no: '[Rr][Ff][Cc]\\s*(\\d+)',
+      ignoreNextTo: ['-', '@'],
+      replaceCaptureGroups: true
+    }]
+    t.deepEqual(
+      processorWithOptions(options)
+        .processSync(new VFile({ path, value }))
+        .messages.map(String),
+      [
+        'fhqwhgads.md:1:5-1:13: Use "RFC-3986" instead of "rfc 3986"',
+        'fhqwhgads.md:1:20-1:27: Use "RFC-1234" instead of "rfc1234"'
+      ],
+      'should flag text that is not in ignoreNextTo items and use capture groups'
+    )
+  }
+
+  {
     const value = 'You got Sblounchsked!'
     t.deepEqual(
       processorWithOptions([{ no: 'Sblounchsked' }])

@@ -11,6 +11,7 @@ Example configuration:
       { no: "End-Of-Life", yes: "End-of-Life" },
       { no: "End-of-life", yes: "End-of-Life" },
       { no: 'gatsby', yes: "Gatsby", ignoreNextTo: "-" },
+      { no: 'sales', yes: "Sales", ignoreNextTo: [ "-", "\'", "'" ] },
       { no: "Github", yes: "GitHub" },
       { no: "Javascript", yes: "JavaScript" },
       { no: "Node.JS", yes: "Node.js" },
@@ -38,9 +39,11 @@ Specifies what users will be told to use instead of the matched `no` value (if p
 
 ### ignoreNextTo
 
-`string`, _optional_
+`string` | `string []`, _optional_
 
 Makes a prohibited string allowable if it appears next to that string. It is interpreted as a literal sequence of character(s) that appear immediately before or after the `yes` text. For example, in the configuration above, users will be told to use "Gatsby" instead of "gatsby". However, "gatsby-plugin" and "node-gatsby" will not be flagged because `'-'` is included in `ignoreNextTo` for that rule.
+
+As an array of strings, the items are combined into a [regex OR condition](https://www.ocpsoft.org/tutorials/regular-expressions/or-in-regex/) to match a number of possible sequences of characters that might appear immediately before or after the `yes` text. In the configuration above, the linter will instruct the user to use "Sales" instead of "sales", but it will ignore "pre-sales", `'sales'`, and `"sales"` (within quotes).
 
 ### replaceCaptureGroups
 
