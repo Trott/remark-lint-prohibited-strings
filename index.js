@@ -23,7 +23,8 @@ function testProhibited (val, content) {
   let ignoreNextTo
   if (val.ignoreNextTo) {
     if (Array.isArray(val.ignoreNextTo)) {
-      ignoreNextTo = `(?:${val.ignoreNextTo.join('|')})`
+      const parts = val.ignoreNextTo.map(a => escapeStringRegexp(a)).join('|')
+      ignoreNextTo = `(?:${parts})`
     } else {
       ignoreNextTo = escapeStringRegexp(val.ignoreNextTo)
     }

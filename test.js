@@ -307,13 +307,13 @@ test('remark-lint-prohibited-strings', (t) => {
   }
 
   {
-    const value = 'use rfc-3986, "rfc", /rfc'
-    const ignoreNextTo = ['-[0-9]{4}', '"', '/']
+    const value = 'use rfc.3986, "rfc", /rfc and rfc='
+    const ignoreNextTo = ['.', '"', '/']
     t.deepEqual(
       processorWithOptions([{ no: 'rfc', yes: 'RFC', ignoreNextTo }])
         .processSync(new VFile({ path, value }))
         .messages.map(String),
-      [],
+      ['fhqwhgads.md:1:31-1:34: Use "RFC" instead of "rfc"'],
       'should respect multiple occurrences of multiple ignoreNextTo array items including regex'
     )
   }
