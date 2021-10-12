@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v3.0.0...v3.1.0) (2021-10-12)
+
+
+### Features
+
+* **options:** `ignoreNextTo` now supports an array of strings to ignore ([#178](https://github.com/Trott/remark-lint-prohibited-strings/issues/178)) ([5c52b47](https://github.com/Trott/remark-lint-prohibited-strings/commit/5c52b47797b3d129b84e9e89c3dab0782c6a9902))
+
 # [3.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v2.1.0...v3.0.0) (2021-08-15)
 
 
