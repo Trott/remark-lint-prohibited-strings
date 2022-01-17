@@ -25,18 +25,18 @@
   },
   "homepage": "https://github.com/Trott/remark-lint-prohibited-strings#readme",
   "dependencies": {
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
     "escape-string-regexp": "^5.0.0",
-    "semantic-release": "^19.0.0-beta.1",
     "unified-lint-rule": "^2.0.0",
     "unist-util-position": "^4.0.1",
     "unist-util-visit": "^4.0.0",
     "vfile-location": "^4.0.1"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "c8": "^7.0.0",
     "remark": "^14.0.1",
+    "semantic-release": "^19.0.0-beta.1",
     "standard": "^16.0.0",
     "tape": "^5.0.0",
     "vfile": "^5.1.0"
