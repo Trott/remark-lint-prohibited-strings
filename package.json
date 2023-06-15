@@ -29,7 +29,7 @@
     "unified-lint-rule": "^2.0.0",
     "unist-util-position": "^4.0.1",
     "unist-util-visit": "^4.0.0",
-    "vfile-location": "^4.0.1"
+    "vfile-location": "^5.0.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
