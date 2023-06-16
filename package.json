@@ -39,7 +39,7 @@
     "semantic-release": "^21.0.0",
     "standard": "^17.0.0",
     "tape": "^5.0.0",
-    "vfile": "^5.1.0"
+    "vfile": "^6.0.0"
   },
   "release": {
     "branches": [
