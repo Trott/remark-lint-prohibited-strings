@@ -1,3 +1,15 @@
+# [4.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v3.1.0...v4.0.0) (2024-03-06)
+
+
+### chore
+
+* update dependencies and perform one lint fix ([3f83f98](https://github.com/Trott/remark-lint-prohibited-strings/commit/3f83f984374a08a4a6ec3754a69948a36edbca11))
+
+
+### BREAKING CHANGES
+
+* Drop support for Node.js earlier than 18.x
+
 # [3.1.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v3.0.0...v3.1.0) (2021-10-12)
 
 
