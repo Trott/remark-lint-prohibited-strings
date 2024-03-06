@@ -62,7 +62,7 @@ function testProhibited (val, content) {
       if (replaceCaptureGroups) {
         yes = result[1].replace(new RegExp(no), yes)
       }
-      results.push({ result: result[1], index: result.index, yes: yes })
+      results.push({ result: result[1], index: result.index, yes })
     }
     result = re.exec(content)
   }

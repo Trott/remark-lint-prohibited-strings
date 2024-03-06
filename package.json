@@ -34,9 +34,9 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
-    "c8": "^8.0.0",
-    "remark": "^14.0.1",
-    "semantic-release": "^21.0.0",
+    "c8": "^9.1.0",
+    "remark": "^15.0.1",
+    "semantic-release": "^23.0.2",
     "standard": "^17.0.0",
     "tape": "^5.0.0",
     "vfile": "^6.0.0"
