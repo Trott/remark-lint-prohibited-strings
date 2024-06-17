@@ -26,7 +26,7 @@
   "homepage": "https://github.com/Trott/remark-lint-prohibited-strings#readme",
   "dependencies": {
     "escape-string-regexp": "^5.0.0",
-    "unified-lint-rule": "^2.0.0",
+    "unified-lint-rule": "^3.0.0",
     "unist-util-position": "^5.0.0",
     "unist-util-visit": "^5.0.0",
     "vfile-location": "^5.0.1"
