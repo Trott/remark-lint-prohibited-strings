@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v4.0.0...v5.0.0) (2026-07-19)
+
+
+### chore
+
+* bump c8 to 12.0.0 ([fc0a575](https://github.com/Trott/remark-lint-prohibited-strings/commit/fc0a575f54e63c9dc5ce19770c0a530bac548dc6))
+
+
+### BREAKING CHANGES
+
+* Drop support for Node.js prior to 22.x
+
 # [4.0.0](https://github.com/Trott/remark-lint-prohibited-strings/compare/v3.1.0...v4.0.0) (2024-03-06)
 
 
